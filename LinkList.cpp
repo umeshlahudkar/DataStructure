@@ -20,11 +20,11 @@ class LinkList{
         Node* head;
 
     public : 
-        LinkList() : head(nullptr) {}
+        LinkList() : head(new Node(0)) {}
         
         void InsertAtHead(int data) {
             if(head == nullptr) {
-                head = new Node(data);
+                head->next = new Node(data);
             }
             else {
                 Node* temp = new Node(data);
@@ -35,7 +35,7 @@ class LinkList{
 
         void InsertAtTail(int data) {
             if(head == nullptr) {
-                 head = new Node(data);
+                 head->next = new Node(data);
                  return;
             }
 
@@ -53,14 +53,14 @@ class LinkList{
 
             if(head == nullptr && index > 0) {return;}
             if(head == nullptr && index == 0) {
-                head = new Node(data);
+                head->next = new Node(data);
                 return;
             }
 
             if(index == 0) {
                 Node* temp = new Node(data);
-                temp->next = head;
-                head = temp;
+                temp->next = head->next;
+                head->next = temp;
                 return;
             }
 
@@ -169,8 +169,27 @@ class LinkList{
             }
         }
 
+        void Reverse() {
+            if(head->next == nullptr) {return;}
+
+            Node* prev = nullptr;
+            Node* current = head->next;
+            Node* next = nullptr;
+
+            while (current != nullptr)
+            {
+                next = current->next;
+
+                current->next = prev;
+
+                prev = current;
+                current = next;
+            }
+            head->next = current;
+        }
+
         void Print() {
-            Node* temp = head;
+            Node* temp = head->next;
 
             while (temp != nullptr)
             {
@@ -189,9 +208,9 @@ int main() {
     list.InsertAtTail(10);
     list.InsertAtTail(15);
 
-    // list.InsertAt(0,1);
+    //list.InsertAt(0,1);
    
-    list.DeleteAt(3);
+    list.Reverse();
 
     list.Print();
     return 0;
