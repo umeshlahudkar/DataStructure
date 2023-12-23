@@ -82,6 +82,138 @@ class DoublyLinkList {
             }
         }
 
+        void DeleteAtHead() {
+            if(head == nullptr) {return;}
+
+            if(head->next == nullptr) {
+                delete head;
+                head = nullptr;
+                return;
+            }
+            
+            Node* temp = head;
+            head = head->next;
+            head->prev = nullptr;
+
+            temp->next = nullptr;
+            temp->prev = nullptr;
+            
+            delete temp;
+        }
+
+        void DeleteAtTail() {
+            if(head == nullptr) {return;}
+
+            if(head->next == nullptr) {
+                delete head;
+                head = nullptr;
+                return;
+            }
+
+            Node* temp = head;
+            while (temp->next != nullptr)
+            {
+                temp = temp->next;
+            }
+
+            temp->prev->next = nullptr;
+            temp->prev = nullptr;
+            delete temp;
+        }
+
+        void DeleteData(int data) {
+            if(head == nullptr) {return;}
+
+            if(head->data == data && head->next == nullptr) {
+                delete head;
+                head == nullptr;
+                return;
+            }
+
+            if(head->data == data) {
+                Node* temp = head;
+                head = head->next;
+                
+                head->prev = nullptr;
+                temp->next = nullptr;
+
+                delete temp;
+                return;
+            }
+
+            Node* temp = head;
+            while (temp != nullptr) 
+            {
+                if(temp->data == data && temp->next != nullptr) {
+                    temp->prev->next = temp->next;
+                    temp->next->prev = temp->prev;
+
+                    temp->next = nullptr;
+                    temp->prev = nullptr;
+
+                    delete temp;
+                    break;
+                }
+                else if(temp->data == data && temp->next == nullptr) {
+                    temp->prev->next = nullptr;
+                    temp->prev = nullptr;
+                    delete temp;
+                    break;
+                }
+                temp = temp->next;
+            }
+        }
+
+        void DeleteAt(int index) {
+            if(head == nullptr) {return;}
+
+            if(index == 0 && head->next == nullptr) {
+                delete head;
+                head = nullptr;
+                return;
+            }
+
+            if(index == 0 && head->next != nullptr) {
+                Node* temp = head;
+                head = head->next;
+
+                head->prev = nullptr;
+                temp->next = nullptr;
+
+                delete temp;
+                return;
+            }
+
+            int count = -1;
+            Node* temp = head;
+            while (temp != nullptr)
+            {
+                count++;
+
+                if(count == index) {
+                    if(temp->next != nullptr) {
+                        temp->prev->next = temp->next;
+                        temp->next->prev = temp->prev;
+
+                        temp->next = nullptr;
+                        temp->prev = nullptr;
+
+                        delete temp;
+                        break;
+                    }
+                    else if(temp->next == nullptr) {
+                        temp->prev->next = nullptr;
+                        temp->prev = nullptr;
+                        delete temp;
+                        break;
+                    }
+                }
+
+                temp = temp->next;
+            }
+             
+        }
+
         void PrintReverse() {
             cout<< "Reverse Print :";
             Node* temp = head;
@@ -111,19 +243,30 @@ class DoublyLinkList {
             cout<<endl;
         }
 
+        ~DoublyLinkList() {
+            Node* current = head;
+
+            while (current != nullptr)
+            {
+                Node* temp = current;
+                current = current->next;
+
+                delete temp;
+            }
+
+            head = nullptr;
+        }
 };
 
 int main() {
 
     DoublyLinkList list;
 
-    //list.InsertAtTail(1);
-    //list.InsertAtTail(2);
-    //list.InsertAtTail(3);
+    list.InsertAtTail(1);
+    list.InsertAtTail(2);
+    list.InsertAtTail(3);
 
-    list.InsertAtIndex(0, 4);
-    list.InsertAtIndex(0, 3);
-    list.InsertAtIndex(1, 5);
+    list.DeleteAt(2);
 
     list.Print();
     list.PrintReverse();

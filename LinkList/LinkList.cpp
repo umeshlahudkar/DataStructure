@@ -216,6 +216,19 @@ class LinkList{
             cout<<endl;
         }
 
+         ~LinkList() {
+            Node* current = head;
+
+            while (current != nullptr)
+            {
+                Node* temp = current;
+                current = current->next;
+
+                delete temp;
+            }
+
+            head = nullptr;
+        }
 };
 
 
