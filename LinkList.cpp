@@ -21,6 +21,21 @@ class LinkList{
 
     public : 
         LinkList() : head(nullptr) {}
+       
+        void ConstructFromArray(int arr[], int size) {
+            head = nullptr;
+            if(size <= 0) {return;}
+            if(head == nullptr) {
+                head = new Node(arr[0]);
+            }
+ 
+            Node* temp = head;
+            for(int i = 1; i < size; i++) {
+                Node* newNode = new Node(arr[i]);
+                temp->next = newNode;
+                temp = newNode;
+            }
+        }
         
         void InsertAtHead(int data) {
             if(head == nullptr) {
@@ -205,13 +220,18 @@ class LinkList{
 
 
 int main() {
+
+    int arr[] = {1,2,3,4,5};
+    int size = sizeof(arr)/sizeof(arr[0]);
     LinkList list;
-    list.InsertAtTail(5);
-    list.InsertAtTail(10);
+    //list.InsertAtTail(5);
+    //list.InsertAtTail(10);
     //list.InsertAtTail(15);
 
-    list.InsertAt(0,1);
+    //list.InsertAt(0,1);
    
+    list.ConstructFromArray(arr, size);
+
     list.Reverse();
 
     list.Print();
