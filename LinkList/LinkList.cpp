@@ -223,15 +223,12 @@ int main() {
 
     int arr[] = {1,2,3,4,5};
     int size = sizeof(arr)/sizeof(arr[0]);
-    LinkList list;
-    //list.InsertAtTail(5);
-    //list.InsertAtTail(10);
-    //list.InsertAtTail(15);
 
-    //list.InsertAt(0,1);
+    LinkList list;
    
     list.ConstructFromArray(arr, size);
 
+    list.InsertAt(0,6);
     list.Reverse();
 
     list.Print();
