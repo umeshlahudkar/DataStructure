@@ -20,11 +20,11 @@ class LinkList{
         Node* head;
 
     public : 
-        LinkList() : head(new Node(0)) {}
+        LinkList() : head(nullptr) {}
         
         void InsertAtHead(int data) {
             if(head == nullptr) {
-                head->next = new Node(data);
+                head = new Node(data);
             }
             else {
                 Node* temp = new Node(data);
@@ -35,7 +35,7 @@ class LinkList{
 
         void InsertAtTail(int data) {
             if(head == nullptr) {
-                 head->next = new Node(data);
+                 head = new Node(data);
                  return;
             }
 
@@ -53,14 +53,14 @@ class LinkList{
 
             if(head == nullptr && index > 0) {return;}
             if(head == nullptr && index == 0) {
-                head->next = new Node(data);
+                head = new Node(data);
                 return;
             }
 
             if(index == 0) {
                 Node* temp = new Node(data);
-                temp->next = head->next;
-                head->next = temp;
+                temp->next = head;
+                head = temp;
                 return;
             }
 
@@ -170,26 +170,28 @@ class LinkList{
         }
 
         void Reverse() {
-            if(head->next == nullptr) {return;}
+            if(head == nullptr || head->next == nullptr) {return;}
 
             Node* prev = nullptr;
-            Node* current = head->next;
-            Node* next = nullptr;
+            Node* current = head;
+            Node* next = head->next;
 
             while (current != nullptr)
             {
-                next = current->next;
-
                 current->next = prev;
 
                 prev = current;
                 current = next;
+
+                if(next != nullptr) {
+                    next = current->next;
+                }
             }
-            head->next = current;
+            head = prev;
         }
 
         void Print() {
-            Node* temp = head->next;
+            Node* temp = head;
 
             while (temp != nullptr)
             {
@@ -206,9 +208,9 @@ int main() {
     LinkList list;
     list.InsertAtTail(5);
     list.InsertAtTail(10);
-    list.InsertAtTail(15);
+    //list.InsertAtTail(15);
 
-    //list.InsertAt(0,1);
+    list.InsertAt(0,1);
    
     list.Reverse();
 
