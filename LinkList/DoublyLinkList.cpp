@@ -214,6 +214,25 @@ class DoublyLinkList {
              
         }
 
+        void Reverse() {
+            if(head == nullptr) {return;}
+
+            Node* currentNode = head;
+            Node* prevNode = nullptr;
+
+            while (currentNode != nullptr)
+            {
+                currentNode->prev = currentNode->next;
+                currentNode->next = prevNode;
+
+                prevNode = currentNode;
+                currentNode = currentNode->prev;
+            }
+
+            head = prevNode;
+            
+        }
+
         void PrintReverse() {
             cout<< "Reverse Print :";
             Node* temp = head;
@@ -266,7 +285,7 @@ int main() {
     list.InsertAtTail(2);
     list.InsertAtTail(3);
 
-    list.DeleteAt(2);
+    list.Reverse();
 
     list.Print();
     list.PrintReverse();
