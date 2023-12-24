@@ -21,6 +21,8 @@ class LinkList{
 
     public : 
         LinkList() : head(nullptr) {}
+
+        Node*& GetHead() {return head;}
        
         void ConstructFromArray(int arr[], int size) {
             head = nullptr;
@@ -232,6 +234,48 @@ class LinkList{
 };
 
 
+void RemoveNthNodeFromEnd(LinkList* list , int n) {
+
+    Node*& head = list->GetHead();
+    if(head == nullptr) {return;}
+ 
+    Node* slow = head;
+    Node* fast = head;
+
+    while (n > 0)
+    {
+        fast = fast->next;
+        n--;
+    }
+    
+    if(fast == nullptr) {
+        if(head->next == nullptr) {
+            delete head;
+            head = nullptr;
+            return;
+        }
+
+        Node* removeNode = head;
+        head = head->next;
+
+        removeNode->next = nullptr;
+        delete removeNode;
+        return;
+    }
+    
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        fast = fast->next;
+        slow = slow->next;
+    }
+    
+    Node* temp = slow->next;
+    slow->next = slow->next->next;
+
+    delete temp;
+}
+
+
 int main() {
 
     int arr[] = {1,2,3,4,5};
@@ -241,9 +285,8 @@ int main() {
    
     list.ConstructFromArray(arr, size);
 
-    list.InsertAt(0,6);
-    list.Reverse();
-
+    RemoveNthNodeFromEnd(&list, 5);
+     
     list.Print();
     return 0;
 }
