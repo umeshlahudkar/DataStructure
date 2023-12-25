@@ -211,6 +211,19 @@ class LinkList{
             }
             head = prev;
         }
+        
+        void MaKeCircular() {
+            if(head == nullptr) {return;}
+
+            Node* temp = head;
+
+            while (temp->next != nullptr)
+            {
+                temp = temp->next;
+            }
+            
+            temp->next = head->next;
+        }
 
         void Print() {
             Node* temp = head;
@@ -221,20 +234,6 @@ class LinkList{
                 temp = temp->next;
             }
             cout<<endl;
-        }
-
-         ~LinkList() {
-            Node* current = head;
-
-            while (current != nullptr)
-            {
-                Node* temp = current;
-                current = current->next;
-
-                //delete temp;
-            }
-
-            head = nullptr;
         }
 };
 
@@ -372,6 +371,89 @@ Node* MergeTwoList(Node* head1, Node* head2) {
     return head->next;
 }
 
+bool IsLoopPresent(Node* head) {
+    if(head == nullptr || head->next == nullptr) {return false;}
+    
+    Node* slow = head;
+    Node* fast = head;
+
+    while(fast != nullptr && fast->next != nullptr) {
+
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if(slow == fast) {
+            return true;
+        }
+
+    }
+    return false;
+}
+
+int GetLengthOfLoop(Node* head) {
+    if(head == nullptr || head->next == nullptr) {return 0;}
+
+    Node* slow = head;
+    Node* fast = head;
+
+    bool isLoopFound = false;
+
+    while(fast != nullptr && fast->next != nullptr) {
+
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if(slow == fast) {
+           isLoopFound = true;
+           break;
+        }
+    }
+    
+    if(!isLoopFound) {return 0;}
+
+    int count = 1;
+    fast = fast->next;
+
+    while (slow != fast)
+    {
+        count++;
+        fast = fast->next;
+    }
+    return count;
+}
+
+Node* GetStartingNodeOfLoop(Node* head) {
+     if(head == nullptr || head->next == nullptr) {return nullptr;}
+    
+    Node* slow = head;
+    Node* fast = head;
+
+    bool isLoopPresent = false;
+
+    while(fast != nullptr && fast->next != nullptr) {
+
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if(slow == fast) {
+            isLoopPresent = true;
+            break;
+        }
+
+    }
+    
+    if(!isLoopPresent) {return nullptr;}
+
+    slow = head;
+
+    while (fast->next != slow->next)
+    {
+        slow = slow->next;
+        fast = fast->next;
+    }
+
+    return slow->next;
+}
 
 int main() {
 
@@ -383,20 +465,11 @@ int main() {
 
     list1.Print();
 
-    int arr2[] = {2,4};
-    int size2 = sizeof(arr2)/sizeof(arr2[0]);
+    list1.MaKeCircular();
 
-    LinkList list2;
-    list2.ConstructFromArray(arr2, size2);
+    Node* loopNode = GetStartingNodeOfLoop(list1.GetHead());
 
-    list2.Print();
-    
-    Node* node = MergeTwoList(list1.GetHead(), list2.GetHead());
+    cout<< "length of loop : "<< loopNode->data << endl;
 
-    LinkList lint3;
-    lint3.SetHead(node);
-
-    lint3.Print();
-     
     return 0;
 }
