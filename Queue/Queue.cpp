@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stack>
 using namespace std;
 
 class Queue {
@@ -161,25 +162,69 @@ class QueueUsingLL {
         bool IsEmpty() {return (head==nullptr && tail == nullptr);}
 };
 
+class QueueBy2Stack {
+    private :
+        stack<int> st1, st2;
+
+    public :
+        void Enqueue(int data) {
+            if(st1.empty()) {
+                st1.push(data);
+                return;
+            }
+
+            while (!st1.empty())
+            {
+                st2.push(st1.top());
+                st1.pop();
+            }
+
+            st1.push(data);
+
+            while (!st2.empty())
+            {
+                st1.push(st2.top());
+                st2.pop();
+            }
+            
+        }
+
+        void Dequeue() {
+            if(!st1.empty()) {
+                st1.pop();
+            }
+        }
+
+        int Front() {
+             if(!st1.empty()) {
+                return st1.top();
+            }
+            return -1;
+        }
+
+        bool IsEmpty() {
+            return st1.empty();
+        }
+        
+};
 
 int main() {
-    QueueUsingLL que;
-    que.Enqueue(1);
-    que.Enqueue(2);
-    que.Enqueue(3);
-    que.Enqueue(4);
-    que.Enqueue(5);
+    QueueBy2Stack que;
+    que.Enqueue(10);
+    que.Enqueue(20);
+    que.Enqueue(30);
+    que.Enqueue(40);
+    que.Enqueue(50);
+
+   
 
     que.Dequeue();
 
-    que.Enqueue(6);
-
-
-    while (!que.IsEmpty())
-    {
+    while(!que.IsEmpty()) {
         cout<< que.Front() << " ";
         que.Dequeue();
     }
+    cout<<endl;
     
     return 0;
 }
