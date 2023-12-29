@@ -1,5 +1,6 @@
 #include<iostream>
 #include <stack>
+#include <queue>
 using namespace std;
 
 class StackUsingArray{
@@ -183,20 +184,66 @@ bool IsBalancedParanthesis(string str) {
     return st.empty();
 }
 
-void Print(stack<int> st) {
-    while (!st.empty())
+class StackBy2Queue {
+    private :
+        queue<int> q1, q2;
+
+    public :
+
+        void Push(int data) {
+            if(q1.empty()) {
+                q1.push(data);
+                return;
+            }
+
+            while(!q1.empty()) {
+                q2.push(q1.front());
+                q1.pop();
+            }
+
+            q1.push(data);
+
+             while(!q2.empty()) {
+                q1.push(q2.front());
+                q2.pop();
+            }
+
+        }
+
+        void Pop() {
+            q1.pop();
+        }
+
+        int Top() {
+            return q1.front();
+        }
+
+        bool IsEmpty() {return q1.empty();}
+};
+
+void Print(StackBy2Queue st) {
+    while (!st.IsEmpty())
     {
-        cout<< st.top() << " ";
-        st.pop();
+        cout<< st.Top() << " ";
+        st.Pop();
     }
     cout<<endl;
 }
 
 int main() {
 
-   cout<< "Is balanced : " << IsBalancedParanthesis("([]{}");
+   StackBy2Queue st;
+   st.Push(10);
+   st.Push(20);
+   st.Push(30);
+   st.Push(40);
+   st.Push(50);
 
-   
+   Print(st);
+
+   st.Pop();
+
+   Print(st);
    
     return 0;
 }
