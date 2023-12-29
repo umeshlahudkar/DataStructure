@@ -91,11 +91,46 @@ void MergeSort(int arr[], int low, int high) {
     Merge(arr, low, mid, high);
 }
 
+int Partition(int arr[], int low, int high) {
+    int start = low;
+    int end = high;
+    int pivot = 0;
+
+    while(start <= end) {
+       while(arr[start] <= arr[pivot]) {
+            start++;
+       }
+
+       while (arr[end] > arr[pivot])
+       {
+            end--;
+       }
+       
+       if(start < end) {
+        swap(arr[start], arr[end]);
+       }
+    }
+
+    swap(arr[pivot], arr[end]);
+    return end;
+}
+
+void QuickSort(int arr[], int low, int high) {
+    if(low >= high) {
+        return;
+    }
+    //if(low < high) {
+        int index = Partition(arr, low, high);
+        QuickSort(arr, low, index-1);
+        QuickSort(arr, index + 1, high);
+    //}
+}
+
 int main() {
     int arr[] = {5, 1, 8, 3, 5};
     int size = sizeof(arr)/sizeof(arr[0]);
 
-    MergeSort(arr, 0, size-1);
+    QuickSort(arr, 0, size-1);
 
     for(int i = 0; i < size; i++) {
         cout<< arr[i] << " ";
